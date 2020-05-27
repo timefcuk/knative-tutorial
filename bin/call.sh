@@ -19,6 +19,10 @@ fi
 
 HOST_HEADER="Host:$KSVC_NAME.$CURR_NS.example.com"
 
+IP_ADDRESS="$(minikube ip):$(kubectl get svc istio-ingressgateway \
+  --namespace istio-system \
+  --output 'jsonpath={.spec.ports[?(@.port==80)].nodePort}')"
+
 if [ $# -le 1 ]
 then
   http GET $IP_ADDRESS "$HOST_HEADER" 
